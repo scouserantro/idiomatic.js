@@ -52,8 +52,6 @@ The following should be considered 1) incomplete, and 2) *REQUIRED READING*. I d
 Projects should always attempt to include some generic means by which source can be linted, tested and compressed in preparation for production use. For this task, [grunt](https://github.com/gruntjs/grunt) by Ben Alman is second to none and has officially replaced the "kits/" directory of this repo.
 
 
-
-
 ### Test Facility
 
 Projects _must_ include some form of unit, reference, implementation or functional testing. Use case demos DO NOT QUALIFY as "tests". The following is a list of test frameworks, none of which are endorsed more than the other.
@@ -97,16 +95,17 @@ The following sections outline a _reasonable_ style guide for modern JavaScript 
 
 
 1. <a name="whitespace">Whitespace</a>
-  - Never mix spaces and tabs.
+  - Never mix spaces and tabs
   - When beginning a project, before you write any code, choose between soft indents (spaces) or real tabs, consider this **law**.
       - For readability, I always recommend setting your editor's indent size to two characters &mdash; this means two spaces or two spaces representing a real tab.
+      - THE ABOVE IS WHAT WE USE
   - If your editor supports it, always work with the "show invisibles" setting turned on. The benefits of this practice are:
       - Enforced consistency
       - Eliminating end of line whitespace
       - Eliminating blank line whitespace
       - Commits and diffs that are easier to read
   - Use [Editorconfig](http://editorconfig.org/) when possible.  It supports most IDEs and handles most whitespace settings.
-
+  - Lines must be less then 80 characters long
 
 2. <a name="spacing">Beautiful Syntax</a>
 
@@ -122,6 +121,10 @@ The following sections outline a _reasonable_ style guide for modern JavaScript 
 
     if(condition) doSomething();
 
+    if(condition) {doSomething()}
+    else if(condition2) {doSomethingElse();}
+    else{doThisInstead();}
+
     while(condition) iterating++;
 
     for(var i=0;i<100;i++) someIterativeFn();
@@ -132,6 +135,14 @@ The following sections outline a _reasonable_ style guide for modern JavaScript 
 
     if ( condition ) {
       // statements
+    }
+
+    if ( condition ) {
+      doSomething();
+    } else if ( condition2 ) {
+      doSomethingElse();
+    } else {
+      doThisInstead();
     }
 
     while ( condition ) {
@@ -145,7 +156,7 @@ The following sections outline a _reasonable_ style guide for modern JavaScript 
     // Even better:
 
     var i,
-      length = 100;
+        length = 100;
 
     for ( i = 0; i < length; i++ ) {
       // statements
@@ -154,7 +165,7 @@ The following sections outline a _reasonable_ style guide for modern JavaScript 
     // Or...
 
     var i = 0,
-      length = 100;
+        length = 100;
 
     for ( ; i < length; i++ ) {
       // statements
@@ -166,28 +177,28 @@ The following sections outline a _reasonable_ style guide for modern JavaScript 
       // statements
     }
 
-
-    if ( true ) {
+    try {
       // statements
-    } else {
+    } catch (variable) {
+      // statements
+    } finally {
       // statements
     }
     ```
-
 
     B. Assignments, Declarations, Functions ( Named, Expression, Constructor )
 
     ```javascript
 
     // 2.B.1.1
-    // Variables
+    // Variables - align variable names
     var foo = "bar",
-      num = 1,
-      undef;
+        num = 1,
+        undef;
 
     // Literal notations:
     var array = [],
-      object = {};
+        object = {};
 
 
     // 2.B.1.2
@@ -201,19 +212,11 @@ The following sections outline a _reasonable_ style guide for modern JavaScript 
 
     // Good
     var foo = "",
-      bar = "",
-      qux;
-
-    // or..
-    var // Comment on these
-    foo = "",
-    bar = "",
-    quux;
+        bar = "",
+        qux;
 
     // 2.B.1.3
     // var statements should always be in the beginning of their respective scope (function).
-
-
     // Bad
     function foo() {
 
@@ -350,54 +353,77 @@ The following sections outline a _reasonable_ style guide for modern JavaScript 
 
     ```
 
-    D. Consistency Always Wins
-
-    In sections 2.A-2.C, the whitespace rules are set forth as a recommendation with a simpler, higher purpose: consistency.
-    It's important to note that formatting preferences, such as "inner whitespace" should be considered optional, but only one style should exist across the entire source of your project.
-
-    ```javascript
-
-    // 2.D.1.1
-
-    if (condition) {
-      // statements
-    }
-
-    while (condition) {
-      // statements
-    }
-
-    for (var i = 0; i < 100; i++) {
-      // statements
-    }
-
-    if (true) {
-      // statements
-    } else {
-      // statements
-    }
-
-    ```
-
-    E. Quotes
+    D. Quotes
 
     Whether you prefer single or double shouldn't matter, there is no difference in how JavaScript parses them. What **ABSOLUTELY MUST** be enforced is consistency. **Never mix quotes in the same project. Pick one style and stick with it.**
 
-    F. Use backticks for string interpolation
-
-    This is now supported in all modern browsers and should be used from now onwards. Be careful when using lints though (esp. www.javascriptlint.com/online_lint.php which sees the \` as an illegal character)
-
     ```javascript
 
-    // 2.F.1.1
-
-    // Bad
-    var p = "http://" + host + "/" + path;
-
-    // Good
-    var p = `http://${host}/${path}`;
 
     ```
+
+    ---------------
+    E. ES6/7 rules
+
+    In some cases, we do not yet allow a new language feature, if it's expensive to polyfill.  In others, we require using the newer language feature and avoiding the old:
+
+    | Construct | Use...                                | ...instead of |
+    | --------- | ------------------------------------- | ---------------------- |
+    | backticks | `` `http://${host}/${path}` `` | `"http://" + host + "/" + path` |
+    | destructuring | `var { x, y } = a;` | `var x = a.x; var y = a.y;` |
+    | fat arrow | `foo(() => { ... })` | `foo(function() { ... }.bind(this))` |
+    | let/const | `let a = 1; const b = "4EVAH"; a++;` | `var a = 1; var b = "4EVAH"; a++;` |
+    | includes | `array.includes(item)` | `array.indexOf(item) !== -1` |
+    | for/of | `for (const [key, value] of Object.entries(obj)) { ... }` | `_.each(obj, function(value, key) { ... })` |
+    | spread | `{ ...a, ...b, c: d }` | `_.extend({}, a, b, { c: d })` |
+    | rest params | `function(bar, ...args) { foo(...args); }` | `function(bar) { var args = Array.prototype.slice.call(arguments, 1); foo.apply(null, args); }` |
+
+    #### Use `=>` instead of `bind(this)`
+
+    Arrow functions are easier to read (and with Babel, more efficient)
+    than calling `bind` manually.
+
+    #### Use rest params instead of `arguments`
+
+    The magic `arguments` variable has some odd quirks. It's simpler to
+    use rest params like `(...args) => foo(args)`.
+
+    #### Use backticks for string interpolation
+
+    `+` is not forbidden, but backticks are encouraged!
+
+    #### Do not use ES6 classes for React classes
+
+    Continue to use React's `createClass`, which works with React mixins.
+
+    For classes outside of React -- which should actually be pretty rare
+    -- there is no style rule whether to use ES6 classes or not.
+
+    This rule may change once React supports mixins with ES6 classes.
+
+    #### Do not use `async`/`await` or generators
+
+    This is because the polyfill for these constructs generates very large
+    code.
+
+    This rule may change once all our supported browsers support ES6
+    natively.
+
+    #### Do not use `Set` or `Map`
+
+    The polyfills for these, though not huge, are large enough it's not
+    worth the (small) benefit of using these classes for hashtables
+    instead of just using `object`.
+
+    This rule may change if strong enough support for these types is
+    evinced.
+
+    #### Use `let` and `const` for new files; do not use `var`
+
+    `let` is superior to `var`, so prefer it for new code.
+
+    This rule will become mandatory everywhere once we have done a fixit
+    to replace all uses of `var` in existing files.
 
     G. End of Lines and Empty Lines
 
@@ -649,12 +675,7 @@ The following sections outline a _reasonable_ style guide for modern JavaScript 
 
     // Will result in 4294967294
 
-
-
-
     ```
-
-
 
 4. <a name="cond">Conditional Evaluation</a>
 
@@ -848,8 +869,6 @@ The following sections outline a _reasonable_ style guide for modern JavaScript 
 
 
 6. <a name="naming">Naming</a>
-
-
 
     A. You are not a human code compiler/compressor, so don't try to be one.
 
@@ -1256,7 +1275,7 @@ The following sections outline a _reasonable_ style guide for modern JavaScript 
     #### Multiline is good
     #### End of line comments are prohibited!
     #### JSDoc style is good, but requires a significant time investment
-
+    #### Always use /*  */ convention for comments
 
 10. <a name="language">One Language Code</a>
 
@@ -1267,10 +1286,5 @@ The following sections outline a _reasonable_ style guide for modern JavaScript 
 ### Comma First.
 
 Any project that cites this document as its base style guide will not accept comma first code formatting, unless explicitly specified otherwise by that project's author.
-
-
-
 ----------
-
-
 <a rel="license" href="http://creativecommons.org/licenses/by/3.0/deed.en_US"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by/3.0/80x15.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">Principles of Writing Consistent, Idiomatic JavaScript</span> by <a xmlns:cc="http://creativecommons.org/ns#" href="https://github.com/rwldrn/idiomatic.js" property="cc:attributionName" rel="cc:attributionURL">Rick Waldron and Contributors</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/3.0/deed.en_US">Creative Commons Attribution 3.0 Unported License</a>.<br />Based on a work at <a xmlns:dct="http://purl.org/dc/terms/" href="https://github.com/rwldrn/idiomatic.js" rel="dct:source">github.com/rwldrn/idiomatic.js</a>.
