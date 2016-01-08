@@ -357,10 +357,7 @@ The following sections outline a _reasonable_ style guide for modern JavaScript 
 
     Whether you prefer single or double shouldn't matter, there is no difference in how JavaScript parses them. What **ABSOLUTELY MUST** be enforced is consistency. **Never mix quotes in the same project. Pick one style and stick with it.**
 
-    ```javascript
-
-
-    ```
+    We will use double quotes always.
 
     ---------------
     E. ES6/7 rules
@@ -391,15 +388,6 @@ The following sections outline a _reasonable_ style guide for modern JavaScript 
     #### Use backticks for string interpolation
 
     `+` is not forbidden, but backticks are encouraged!
-
-    #### Do not use ES6 classes for React classes
-
-    Continue to use React's `createClass`, which works with React mixins.
-
-    For classes outside of React -- which should actually be pretty rare
-    -- there is no style rule whether to use ES6 classes or not.
-
-    This rule may change once React supports mixins with ES6 classes.
 
     #### Do not use `async`/`await` or generators
 
@@ -482,7 +470,9 @@ The following sections outline a _reasonable_ style guide for modern JavaScript 
         object.hasOwnProperty( prop )
         "prop" in object
 
-    B. Coerced Types
+    B. Coerced Types,     === and !== Operators.
+
+    Always use the === and !== operators. The == and != operators do type coercion and should not be used.
 
     Consider the implications of the following...
 
@@ -522,9 +512,7 @@ The following sections outline a _reasonable_ style guide for modern JavaScript 
 
     // `importantTask()` would never be evaluated, even though `foo` has a value of "1"
 
-
     // 3.B.1.2
-
     // You can preempt issues by using smart coercion with unary + or - operators:
 
     foo = +document.getElementById("foo-input").value;
@@ -541,17 +529,15 @@ The following sections outline a _reasonable_ style guide for modern JavaScript 
 
     // `importantTask()` will be called
     ```
-
     Here are some common cases along with coercions:
-
 
     ```javascript
 
     // 3.B.2.1
 
     var number = 1,
-      string = "1",
-      bool = false;
+        string = "1",
+        bool = false;
 
     number;
     // 1
@@ -581,13 +567,11 @@ The following sections outline a _reasonable_ style guide for modern JavaScript 
     // "false"
     ```
 
-
     ```javascript
     // 3.B.2.2
-
     var number = 1,
-      string = "1",
-      bool = true;
+        string = "1",
+        bool = true;
 
     string === number;
     // false
@@ -654,7 +638,6 @@ The following sections outline a _reasonable_ style guide for modern JavaScript 
     num >>> 0;
 
     // All result in 2
-
 
     // Keep in mind however, that negative numbers will be treated differently...
 
@@ -900,9 +883,9 @@ The following sections outline a _reasonable_ style guide for modern JavaScript 
     }
 
     var idx = 0,
-      elements = [],
-      matches = query("#foo"),
-      length = matches.length;
+        elements = [],
+        matches = query("#foo"),
+        length = matches.length;
 
     for ( ; idx < length; idx++ ) {
       elements.push( matches[ idx ] );
@@ -1275,12 +1258,13 @@ The following sections outline a _reasonable_ style guide for modern JavaScript 
     #### Multiline is good
     #### End of line comments are prohibited!
     #### JSDoc style is good, but requires a significant time investment
-    #### Always use /*  */ convention for comments
+    #### Always use /*  */ convention for comments, ideally at the 80 character line length
 
-10. <a name="language">One Language Code</a>
+    ```javascript
+    // Example...
+    /* This is the comment                                                    */
 
-    Programs should be written in one language, whatever that language may be, as dictated by the maintainer or maintainers.
-
+    ```
 ## Appendix
 
 ### Comma First.
